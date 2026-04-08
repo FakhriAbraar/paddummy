@@ -177,7 +177,7 @@ from datetime import datetime
 os.makedirs(os.path.dirname(FILE_KEYWORD_INPUT), exist_ok=True)
 if not os.path.exists(FILE_KEYWORD_INPUT):
     with open(FILE_KEYWORD_INPUT, "w", encoding="utf-8") as f:
-        json.dump(["kodashop", "coklat putih"], f, indent=4)
+        json.dump(["prabowo", "jokowi"], f, indent=4)
 
 # 2. Baca keyword
 with open(FILE_KEYWORD_INPUT, "r", encoding="utf-8") as f:

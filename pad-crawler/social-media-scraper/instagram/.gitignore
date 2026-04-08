@@ -1,5 +1,7 @@
+__pycache__/
+data/
+downloads/
+referensi/
 .env
-tutorial-instaloader.md
-tutorial-instaloader.pdf
-test.py
-scrape-link-post-instagram.py
+ig_session.json
+not-use-download.py

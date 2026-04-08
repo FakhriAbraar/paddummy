@@ -1,4 +1,4 @@
-S D:\Informatics Semester 6\Capstone Project\Riset-UseCase> npx tweet-harvest --help
+Powershell> npx tweet-harvest --help
 Tweet Harvest [v2.7.1]
 
 Research by Helmi Satria

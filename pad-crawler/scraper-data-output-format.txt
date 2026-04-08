@@ -34,5 +34,3 @@ text_content: string
 
 Command Terminal
 playwright codegen LINK_WEBSITE
-playwright codegen https://trends24.in/indonesia/
-python .\google-trends-scraper\src.py
