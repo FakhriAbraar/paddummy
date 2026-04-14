@@ -1,0 +1,10 @@
+downloads/
+data/
+output-scrape.json
+yt-dlp-info-full.json
+yt-dlp-hook-info.json
+
+baihaqi.py
+not-use-download.py
+not-use-read-json-info-ytdlp.py
+not-use-read-json-link.py
