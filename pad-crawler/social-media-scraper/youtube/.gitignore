@@ -1,2 +1,6 @@
 .venv/
 data/
+downloads/
+
+chatgpt.py
+yt-dlp-info-full.json

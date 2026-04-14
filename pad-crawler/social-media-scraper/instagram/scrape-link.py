@@ -1,5 +1,6 @@
+# STATUS: SUDAH FUNGSIONAL, BISA HEADLESS BROWSER
+
 import os
-import sys
 import json
 import time
 import random
@@ -13,9 +14,11 @@ IG_USER = None
 IG_PASS = None
 BASE_DIR = Path(__file__).resolve().parent
 SESSION_FILE = BASE_DIR / "ig_session.json"
-TARGET_TAGS = ["aniesbaswedan", "prabowosubianto", "ganjarpranowo"] 
+OUTPUT_PATH = BASE_DIR / "data" / f"hasil_instagram.json"
+TARGET_TAGS = ["aniesbaswedan", "prabowosubianto", "ganjarpranowo"]
 MAX_POST_PER_TAG = 20
 MAX_EMPTY_SCROLL = 10
+HEADLESS_FLAG = True # False => MUNCUL GUI, True => Only Terminal
 
 def testing_config():
     print(f"IG_USER {IG_USER}, IG_PASS {IG_PASS}")
@@ -122,7 +125,7 @@ def scrape_instagram():
     hasil_final = {}
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=HEADLESS_FLAG)
         
         if os.path.exists(SESSION_FILE):
             print("Memuat sesi login lama...")
@@ -184,6 +187,8 @@ def scrape_instagram():
                         full_url = f"https://www.instagram.com{href}"
                         links_found.add(full_url)
 
+                print(f"  Total sementara: {len(links_found)}")
+
                 if len(links_found) < MAX_POST_PER_TAG:
                     # page.evaluate("window.scrollBy(0, 800)")
                     # time.sleep(random.uniform(2, 4))
@@ -218,14 +223,28 @@ if __name__ == "__main__":
         "data": data
     }
     
-    # Hanya buat file JSON jika datanya tidak kosong (artinya login sukses dan scraping jalan)
-    counter = 6
-    output_path = BASE_DIR / "data" / f"hasil_explore_ig_{counter}.json"
-
     if data:
-        with open(output_path, "w", encoding="utf-8") as f:
+        # Rename hasil_instagram.json to hasil_instagram_N.json (N = last number + 1)
+        data_dir = OUTPUT_PATH.parent
+        base_name = "hasil_instagram"
+        existing = list(data_dir.glob(f"{base_name}_*.json"))
+        max_num = 0
+        for f in existing:
+            try:
+                num = int(f.stem.split('_')[-1])
+                if num > max_num:
+                    max_num = num
+            except Exception:
+                continue
+        new_path = data_dir / f"{base_name}_{max_num+1}.json"
+
+        if OUTPUT_PATH.exists():
+            OUTPUT_PATH.rename(new_path)
+
+        with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
             json.dump(output, f, indent=4, ensure_ascii=False)
+
         print("\n" + "="*30)
         print("SCRAPING SELESAI")
-        print(f"Data disimpan di: {output_path}")
+        print(f"Data disimpan di: {OUTPUT_PATH}")
         print("="*30)

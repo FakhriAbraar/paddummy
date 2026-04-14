@@ -1,7 +1,8 @@
-# STATUS: SEDANG DALAM RISET
+# STATUS: SUDAH FUNGSIONAL, BISA HEADLESS BROWSER
 
 # Example endpoint: https://www.youtube.com/results?search_query=python+tutorial
 
+import re
 import json
 import time
 import random
@@ -13,11 +14,12 @@ from playwright.sync_api import sync_playwright
 # KONFIGURASI
 # ========================
 BASE_DIR = Path(__file__).resolve().parent
+OUTPUT_PATH = BASE_DIR / "data" / "hasil_youtube.json"
 
 TARGET_TAGS = ["prabowo+subianto", "anies+baswedan", "ganjar+pranowo"]
 MAX_VIDEO_PER_TAG = 200
-MAX_EMPTY_SCROLL = 10
-
+MAX_SCROLL = 10
+HEADLESS_FLAG = True # False => MUNCUL GUI, True => Only Terminal
 
 # ========================
 # HUMAN SCROLL
@@ -42,7 +44,7 @@ def scrape_youtube():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False,
+            headless=HEADLESS_FLAG,
             args=[
                 '--disable-blink-features=AutomationControlled',
                 '--no-sandbox',
@@ -75,17 +77,6 @@ def scrape_youtube():
         print('Berada di root YouTube, menunggu lebih lama...')
         time.sleep(10)  # Delay lebih lama di root
 
-        # Simulasi interaksi user di root YouTube
-        print('Simulasi interaksi user di root YouTube...')
-        for _ in range(3):
-            try:
-                page.locator("div#sections.style-scope.ytd-guide-renderer").scroll_into_view_if_needed()
-            except Exception:
-                pass
-            # human_scroll(page)
-            page.mouse.wheel(0, random.randint(300, 600))
-            time.sleep(random.uniform(1, 2))
-
         for tag in TARGET_TAGS:
             print(f"\n--- Menjelajahi #{tag} ---")
 
@@ -98,7 +89,7 @@ def scrape_youtube():
             links_found = set()
             retry_scroll = 0
 
-            while len(links_found) < MAX_VIDEO_PER_TAG and retry_scroll < MAX_EMPTY_SCROLL:
+            while len(links_found) < MAX_VIDEO_PER_TAG and retry_scroll < MAX_SCROLL:
                 
                 elements = page.query_selector_all("a")
 
@@ -111,13 +102,10 @@ def scrape_youtube():
                     if not href:
                         continue
 
-                    # filter khusus
                     if "/watch" in href:
-                        if href.startswith("http"):
-                            full_url = href
-                        else:
-                            full_url = f"https://www.youtube.com{href}"
-
+                        shortcode = re.search(r'v=([^&]+)', href)
+                        if shortcode:
+                            full_url = f"https://www.youtube.com/watch?v={shortcode.group(1)}"
                         links_found.add(full_url)
 
                 print(f"  Total sementara: {len(links_found)}")
@@ -156,13 +144,28 @@ if __name__ == "__main__":
         "data": data
     }
 
-    output_path = BASE_DIR / "data" / "hasil_youtube_1.json"
-
     if data:
-        with open(output_path, "w", encoding="utf-8") as f:
+        # Rename hasil_youtube.json to hasil_youtube_N.json (N = last number + 1)
+        data_dir = OUTPUT_PATH.parent
+        base_name = "hasil_youtube"
+        existing = list(data_dir.glob(f"{base_name}_*.json"))
+        max_num = 0
+        for f in existing:
+            try:
+                num = int(f.stem.split('_')[-1])
+                if num > max_num:
+                    max_num = num
+            except Exception:
+                continue
+        new_path = data_dir / f"{base_name}_{max_num+1}.json"
+
+        if OUTPUT_PATH.exists():
+            OUTPUT_PATH.rename(new_path)
+
+        with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
             json.dump(output, f, indent=4, ensure_ascii=False)
 
         print("\n" + "="*30)
         print("SCRAPING YOUTUBE SELESAI")
-        print(f"Data disimpan di: {output_path}")
+        print(f"Data disimpan di: {OUTPUT_PATH}")
         print("="*30)

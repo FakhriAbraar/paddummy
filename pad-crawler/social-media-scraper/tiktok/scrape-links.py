@@ -1,4 +1,4 @@
-# STATUS: SUDAH FUNGSIONAL
+# STATUS: SUDAH FUNGSIONAL, TIDAK BISA HEADLESS
 
 import json
 import time
@@ -11,10 +11,12 @@ from playwright.sync_api import sync_playwright
 # KONFIGURASI
 # ========================
 BASE_DIR = Path(__file__).resolve().parent
+OUTPUT_PATH = BASE_DIR / "data" / "hasil_tiktok.json"
 
 TARGET_TAGS = ["prabowosubianto", "aniesbaswedan", "ganjarpranowo"]
 MAX_VIDEO_PER_TAG = 200
-MAX_EMPTY_SCROLL = 10
+MAX_SCROLL = 10
+HEADLESS_FLAG = False # False => MUNCUL GUI, True => Only Terminal
 
 # ========================
 # HUMAN SCROLL
@@ -39,7 +41,7 @@ def scrape_tiktok():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False,
+            headless=HEADLESS_FLAG,
             args=[
                 '--disable-blink-features=AutomationControlled',
                 '--no-sandbox',
@@ -106,7 +108,7 @@ def scrape_tiktok():
             links_found = set()
             retry_scroll = 0
 
-            while len(links_found) < MAX_VIDEO_PER_TAG and retry_scroll < MAX_EMPTY_SCROLL:
+            while len(links_found) < MAX_VIDEO_PER_TAG and retry_scroll < MAX_SCROLL:
                 
                 elements = page.query_selector_all("a")
 
@@ -164,13 +166,28 @@ if __name__ == "__main__":
         "data": data
     }
 
-    output_path = BASE_DIR / "data" / "hasil_tiktok.json"
-
     if data:
-        with open(output_path, "w", encoding="utf-8") as f:
+        # Rename hasil_tiktok.json to hasil_tiktok_N.json (N = last number + 1)
+        data_dir = OUTPUT_PATH.parent
+        base_name = "hasil_tiktok"
+        existing = list(data_dir.glob(f"{base_name}_*.json"))
+        max_num = 0
+        for f in existing:
+            try:
+                num = int(f.stem.split('_')[-1])
+                if num > max_num:
+                    max_num = num
+            except Exception:
+                continue
+        new_path = data_dir / f"{base_name}_{max_num+1}.json"
+
+        if OUTPUT_PATH.exists():
+            OUTPUT_PATH.rename(new_path)
+
+        with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
             json.dump(output, f, indent=4, ensure_ascii=False)
 
         print("\n" + "="*30)
         print("SCRAPING TIKTOK SELESAI")
-        print(f"Data disimpan di: {output_path}")
+        print(f"Data disimpan di: {OUTPUT_PATH}")
         print("="*30)
