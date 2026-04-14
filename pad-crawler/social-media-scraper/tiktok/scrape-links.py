@@ -1,24 +1,20 @@
 # STATUS: SUDAH FUNGSIONAL
 
-import os
 import json
 import time
 import random
 from pathlib import Path
 from datetime import datetime
-from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
 # ========================
 # KONFIGURASI
 # ========================
 BASE_DIR = Path(__file__).resolve().parent
-SESSION_FILE = BASE_DIR / "tiktok_session.json"
 
 TARGET_TAGS = ["prabowosubianto", "aniesbaswedan", "ganjarpranowo"]
 MAX_VIDEO_PER_TAG = 200
 MAX_EMPTY_SCROLL = 10
-
 
 # ========================
 # HUMAN SCROLL
@@ -156,7 +152,6 @@ def scrape_tiktok():
 # MAIN
 # ========================
 if __name__ == "__main__":
-    load_dotenv()
 
     data = scrape_tiktok()
 
