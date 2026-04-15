@@ -51,3 +51,6 @@ JSON Documentation
 "tweet_url": Link langsung ke tweet,
 "user_id_str": ID unik pengguna,
 "username": Username akun yang membuat tweet
+
+Contoh command
+npx tweet-harvest -s "igrs steam" -t aff1ac0a4c43ccbe770ce6bf9b1c597657835fdd -l 100 -o hasil.csv -e csv

@@ -1,1 +1,9 @@
 data/
+riset/
+
+log.txt
+.env
+.env.example
+auth_token.txt
+twitter_session.json
+not-use-convert-to-json.py
