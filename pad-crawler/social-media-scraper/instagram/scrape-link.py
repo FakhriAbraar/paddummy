@@ -20,11 +20,6 @@ MAX_POST_PER_TAG = 20
 MAX_EMPTY_SCROLL = 10
 HEADLESS_FLAG = True # False => MUNCUL GUI, True => Only Terminal
 
-def testing_config():
-    print(f"IG_USER {IG_USER}, IG_PASS {IG_PASS}")
-    print(f"BASE_DIR {BASE_DIR}")
-    print(f"SESSION_FILE {SESSION_FILE}")
-
 def human_scroll(page):
     """
     Simulasi scroll manusia: 
@@ -210,8 +205,6 @@ if __name__ == "__main__":
 
     IG_USER = os.getenv("IG_USER")
     IG_PASS = os.getenv("IG_PASS")
-
-    # testing_config()
 
     data = scrape_instagram()
     output = {

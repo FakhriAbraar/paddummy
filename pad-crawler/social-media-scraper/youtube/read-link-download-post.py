@@ -42,7 +42,7 @@ with yt_dlp.YoutubeDL(ydl_opts) as ydl:
 
             # [DEBUGGING]
             # with open("yt-dlp-info-full.json", "w", encoding="utf-8") as f:
-            #     json.dump(info, f, indent=4, ensure_ascii=False)
+                # json.dump(info, f, indent=4, ensure_ascii=False)
 
             upload_date = info.get("upload_date")
             if upload_date:

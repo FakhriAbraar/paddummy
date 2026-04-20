@@ -1,0 +1,106 @@
+{
+    "metadata": {
+        "platform": "", // string
+        /*
+        twitter: twitter
+        instagram: instagram
+        tiktok: tiktok
+        youtube: youtube
+        */
+        "scraped_at": "", // timestamp 
+        "target_tags": "", // array of keyword
+        "max_post_per_tag": "" // integer
+    },
+    "data": [
+        {
+            "unique_id": "", // string timestamp_{counter}
+            "url": "", // string
+            /*
+            twitter: tweet_url
+            instagram: post_link
+            tiktok: webVideoUrl
+            youtube: video_url
+            */
+            "type": "", // video, image, text, videoWithImage (harus cari cara gimana dapetinnya)
+            "caption": "", // string paragraph
+            /*
+            twitter: full_text
+            instagram: caption
+            tiktok: text
+            youtube: concat(title, description)
+            */
+            "duration": "",
+            /*
+            twitter: null
+            instagram: null
+            tiktok: videoMeta.get('duration')
+            youtube: duration
+            */
+            "file_path": "", // string
+            /*
+            twitter: download(image_url)
+            instagram: file_path
+            tiktok: formatting sendiri hasil dari yt_dlp
+            youtube: filepath atau formatting sendiri
+            */
+            "published_at": "", // timestamp
+            /*
+            twitter: created_at
+            instagram: date
+            tiktok: createTimeISO
+            youtube: upload_date
+            */
+            "creator_username": "", // string
+            /*
+            twitter: username
+            instagram: owner_username
+            tiktok: authorMeta.get("name")
+            youtube: uploader
+            */
+            "engagement": {
+                "like_count": "", // integer
+                /*
+                twitter: favorite_count
+                instagram: like_count
+                tiktok: diggCount
+                youtube: like_count
+                */
+                "comment_count": "", // integer
+                /*
+                twitter: reply_count
+                instagram: comment_count
+                tiktok: commentCount
+                youtube: comment_count
+                */
+                "share_count": "", // integer
+                /*
+                twitter: null
+                instagram: null
+                tiktok: shareCount
+                youtube: null
+                */
+                "view_count": "", // integer
+                /*
+                twitter: null
+                instagram: null
+                tiktok: playCount
+                youtube: view_count
+                */
+                "saved_count": "", // integer
+                /*
+                twitter: null
+                instagram: null
+                tiktok: collectCount
+                youtube: null
+                */
+                "repost_count": "" // integer
+                /*
+                twitter: concat(quote_count, retweet_count)
+                instagram: null
+                tiktok: repostCount
+                youtube: null
+                */
+            }
+        }
+    ]
+}

@@ -17,7 +17,7 @@ SOURCE_PATH = BASE_DIR / "tweets-data" / "hasil.csv"
 DEST_PATH = BASE_DIR / "tweets-data" / "hasil.json"
 
 TWITTER_USER = ""
-TWITTER_PASS = "4lg0f4mb1s41tf"
+TWITTER_PASS = ""
 
 SEARCH_QUERY = "komdigi"
 AUTH_TOKEN = None

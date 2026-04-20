@@ -1,10 +1,14 @@
 downloads/
 data/
+output/
 output-scrape.json
 yt-dlp-info-full.json
 yt-dlp-hook-info.json
 
 baihaqi.py
 not-use-download.py
-not-use-read-json-info-ytdlp.py
+not-use-apify-old.py
 not-use-read-json-link.py
+not-use-validate-video-path.py
+not-use-read-json-info-ytdlp.py
+.env
