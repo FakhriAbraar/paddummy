@@ -1,5 +1,6 @@
 data/
 riset/
+tweets-data/
 
 log.txt
 .env
