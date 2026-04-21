@@ -3,4 +3,5 @@ data/
 downloads/
 
 chatgpt.py
+scrape-download.py
 yt-dlp-info-full.json

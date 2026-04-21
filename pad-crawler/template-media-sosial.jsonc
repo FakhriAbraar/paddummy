@@ -21,7 +21,7 @@
             tiktok: webVideoUrl
             youtube: video_url
             */
-            "type": "", // video, image, text, videoWithImage (harus cari cara gimana dapetinnya)
+            "type": "", // video, image, text, videoWithImage, multipleImage (harus cari cara gimana dapetinnya)
             "caption": "", // string paragraph
             /*
             twitter: full_text

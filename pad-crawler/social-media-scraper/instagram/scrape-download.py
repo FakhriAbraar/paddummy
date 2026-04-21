@@ -259,9 +259,9 @@ if __name__ == "__main__":
     counter = 0
     scraped_at = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     typename_map = {
-        "GraphImage": "Photo",
-        "GraphVideo": "Video",
-        "GraphSidecar": "Carousel"
+        "GraphImage": "image",
+        "GraphVideo": "video",
+        "GraphSidecar": "multipleImage"
     }
 
     final_data = {
