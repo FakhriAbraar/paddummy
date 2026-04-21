@@ -2,6 +2,7 @@ __pycache__/
 data/
 downloads/
 referensi/
+output/
 .env
 ig_session.json
 not-use-download.py
