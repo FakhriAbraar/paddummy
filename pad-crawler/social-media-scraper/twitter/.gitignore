@@ -1,9 +1,9 @@
-data/
-riset/
 tweets-data/
+downloads/
 
-log.txt
 .env
+# bin.js > source code tweet-harvest
+bin.js
 .env.example
 auth_token.txt
 twitter_session.json
