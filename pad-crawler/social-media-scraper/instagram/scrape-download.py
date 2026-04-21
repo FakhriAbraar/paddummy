@@ -267,7 +267,7 @@ if __name__ == "__main__":
     final_data = {
         "metadata": {
             "platform": "instagram",
-            "scraped_at": datetime.now().isoformat(),
+            "scraped_at": scraped_at,
             "target_tags": TARGET_TAGS,
             "max_post_per_tag": MAX_POST_PER_TAG
         },
@@ -292,6 +292,14 @@ if __name__ == "__main__":
             if match:
                 shortcode = match.group(1)
                 post = instaloader.Post.from_shortcode(L.context, shortcode)
+                L.download_post(post, target=f"{shortcode}")
+
+                target_dir = DOWNLOAD_PATH / shortcode
+                actual_file_path = None
+                if target_dir.exists() and any(target_dir.iterdir()):
+                    actual_file_path = str(target_dir)
+                else:
+                    print(f"  ⚠️ Folder kosong atau gagal dibuat untuk {shortcode}")
 
                 temporary_clean_data = {
                     "unique_id": f"{scraped_at}_{counter}",
@@ -299,7 +307,7 @@ if __name__ == "__main__":
                     "type": typename_map.get(post.typename, "Unknown"),
                     "caption": post.caption.replace("\n", " ") if post.caption else None,
                     "duration": None,
-                    "file_path": str(DOWNLOAD_PATH / shortcode), 
+                    "file_path": actual_file_path, 
                     "published_at": post.date.isoformat(),
                     "creator_username": post.owner_username,
                     "engagement": {
@@ -313,8 +321,6 @@ if __name__ == "__main__":
                 }
 
                 final_data["data"].append(temporary_clean_data)
-
-                L.download_post(post, target=f"{shortcode}")
                 time.sleep(1)
 
         print(f"  Selesai download #{keyword}")
