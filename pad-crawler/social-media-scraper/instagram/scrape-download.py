@@ -55,6 +55,10 @@ BASE_DIR = Path(__file__).resolve().parent
 DOWNLOAD_PATH = BASE_DIR / "downloads"
 SESSION_FILE = BASE_DIR / "ig_session.json"
 
+# === 2.1. Siapkan folder ===
+os.makedirs("output", exist_ok=True)
+os.makedirs("downloads", exist_ok=True)
+
 TARGET_TAGS = keyword
 MAX_POST_PER_TAG = target_post
 MAX_EMPTY_SCROLL = max_scroll
@@ -324,11 +328,7 @@ if __name__ == "__main__":
                 time.sleep(1)
 
         print(f"  Selesai download #{keyword}")
-    
-    # === 8. Siapkan folder ===
-    os.makedirs("output", exist_ok=True)
-    os.makedirs("downloads", exist_ok=True)
-    
-    # === 9. Simpan ke json ===
+       
+    # === 8. Simpan ke json ===
     with open(f"output/media-sosial-instagram-selected-field-data-{scraped_at}.json", "w", encoding="utf-8") as f:
         json.dump(final_data, f, ensure_ascii=False, indent=2)
