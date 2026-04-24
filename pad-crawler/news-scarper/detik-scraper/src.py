@@ -126,6 +126,12 @@ with sync_playwright() as p:
     i = 1
     filename = f"{base_path}/{base_name}{ext}"
 
+    # --- PERBAIKAN: Memastikan folder dibuat jika belum ada ---
+    folder_path = os.path.dirname(filename)
+    if folder_path:
+        os.makedirs(folder_path, exist_ok=True)
+    # ----------------------------------------------------------
+
     while os.path.exists(filename):
         filename = f"{base_path}/{base_name}_{i}{ext}"
         i += 1
